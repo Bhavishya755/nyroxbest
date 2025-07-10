@@ -5,7 +5,7 @@ channel = "stable-24_05"
 packages = ["cacert", "ffmpeg-full", "freetype", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "pkg-config", "tcl", "tk", "zlib"]
 
 [workflows]
-runButton = "Telegram Bot"
+runButton = "Project"
 
 [[workflows.workflow]]
 name = "Project"
@@ -14,12 +14,17 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Telegram Bot"
+args = "Bot with Health Server"
 
 [[workflows.workflow]]
-name = "Telegram Bot"
+name = "Bot with Health Server"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "pip install python-telegram-bot && python main.py"
+args = "python simple_server.py"
+waitForPort = 5000
+
+[[ports]]
+localPort = 5000
+externalPort = 80
