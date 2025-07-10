@@ -6,8 +6,7 @@ Handles mute, warn, delete, purge and other moderation functions
 import logging
 import json
 import os
-from datetime import datetime
-import pytz
+from datetime import datetime, timezone
 from telegram import Update, ChatPermissions
 from telegram.ext import ContextTypes
 from telegram.error import BadRequest

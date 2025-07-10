@@ -4,6 +4,7 @@ Handles start, help, menu and other general functions
 """
 
 import logging
+from datetime import datetime
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes, CallbackQueryHandler
 from config import (BOT_NAME, BOT_VERSION, BOT_DESCRIPTION, EMOJIS, 
@@ -447,7 +448,7 @@ async def test_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"🤖 **Bot Status:** Online and working\n"
             f"👤 **Your ID:** `{update.effective_user.id}`\n"
             f"💬 **Chat ID:** `{update.effective_chat.id}`\n"
-            f"⏰ Time: {datetime.now(pytz.timezone('Asia/Kolkata')).strftime('%Y-%m-%d %H:%M:%S')}\n\n"
+            f"⏰ **Time:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}\n\n"
             f"🔧 **Admin Commands:** Try replying to a message and use `/ban` or `/kick`\n"
             f"🎮 **Fun Commands:** Working perfectly (dice, jokes, etc.)\n"
             f"📊 **Info Commands:** All functional",
