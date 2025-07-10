@@ -4,78 +4,97 @@ Helper script to get your Replit URL for UptimeRobot setup
 """
 
 import os
-import json
+import requests
+import time
 
 def get_replit_url():
     """Get the current Replit URL"""
+    # Try to get from environment variables
+    replit_slug = os.environ.get('REPL_SLUG', 'your-repl')
+    replit_owner = os.environ.get('REPL_OWNER', 'your-username')
     
-    # Method 1: Check environment variables
-    domain = os.environ.get('REPLIT_DOMAIN')
-    if domain:
-        url = f"https://{domain}"
-        print(f"🌐 Your Replit URL: {url}")
-        print(f"📍 Health endpoint: {url}/health")
-        print(f"📊 Status endpoint: {url}/")
-        return url
+    # Different possible URL formats
+    possible_urls = [
+        f"https://{replit_slug}.{replit_owner}.repl.co",
+        f"https://{replit_slug}-{replit_owner}.repl.co",
+        # Get from REPLIT_DOMAINS if available
+        os.environ.get('REPLIT_DOMAINS', '').split(',')[0] if os.environ.get('REPLIT_DOMAINS') else None
+    ]
     
-    # Method 2: Try to detect from current request
-    replit_url = os.environ.get('REPLIT_URL')
-    if replit_url:
-        print(f"🌐 Your Replit URL: {replit_url}")
-        print(f"📍 Health endpoint: {replit_url}/health")
-        print(f"📊 Status endpoint: {replit_url}/")
-        return replit_url
+    print("🔍 Detecting your Replit URL...")
+    print(f"📝 Repl: {replit_slug}")
+    print(f"👤 Owner: {replit_owner}")
+    print()
     
-    # Method 3: Check for other Replit environment variables
-    replit_id = os.environ.get('REPLIT_ID')
-    if replit_id:
-        print(f"🆔 Replit ID: {replit_id}")
-        print("💡 Your URL will be something like:")
-        print(f"   https://your-long-id.repl.co")
+    for url in possible_urls:
+        if url and url.startswith('http'):
+            print(f"🌐 Possible URL: {url}")
     
-    print("\n📝 To find your URL:")
-    print("1. Look at your Replit's webview panel")
-    print("2. Copy the URL from the address bar")
-    print("3. Add '/health' at the end for UptimeRobot")
+    # Try to detect from REPLIT_DOMAINS
+    domains = os.environ.get('REPLIT_DOMAINS', '')
+    if domains:
+        domain = domains.split(',')[0]
+        if domain:
+            full_url = f"https://{domain}"
+            print(f"✅ Found URL from REPLIT_DOMAINS: {full_url}")
+            return full_url
     
-    return None
+    # Fallback
+    fallback_url = f"https://{replit_slug}.{replit_owner}.repl.co"
+    print(f"🔄 Using fallback URL: {fallback_url}")
+    return fallback_url
 
 def test_health_endpoint():
     """Test the health endpoint"""
-    try:
-        import urllib.request
-        import urllib.error
-        
-        with urllib.request.urlopen('http://localhost:5000/health') as response:
-            if response.getcode() == 200:
-                data = json.loads(response.read().decode())
-                print(f"✅ Health endpoint working!")
-                print(f"📊 Status: {data.get('status')}")
-                print(f"🤖 Bot Status: {data.get('bot_status')}")
-                print(f"⏱️ Uptime: {data.get('uptime')}")
-                print(f"🔄 Health Checks: {data.get('check_count')}")
-            else:
-                print(f"❌ Health endpoint returned status: {response.getcode()}")
-    except Exception as e:
-        print(f"❌ Could not test health endpoint: {e}")
-
-if __name__ == "__main__":
-    print("🔍 Finding your Replit URL for UptimeRobot setup...\n")
-    
-    # Test local health endpoint first
-    test_health_endpoint()
-    print()
-    
-    # Get Replit URL
-    url = get_replit_url()
+    base_url = get_replit_url()
+    health_url = f"{base_url}/health"
     
     print("\n" + "="*50)
-    print("📋 UptimeRobot Setup Instructions:")
+    print("🏥 TESTING HEALTH ENDPOINT")
     print("="*50)
-    print("1. Go to uptimerobot.com and create free account")
-    print("2. Click '+ Add New Monitor'")
-    print("3. Monitor Type: HTTP(s)")
-    print("4. URL: [Your Replit URL]/health")
-    print("5. Interval: 5 minutes")
-    print("6. Create monitor")
-    print("\n✅ Your bot will stay alive 24/7!")
+    print(f"Testing: {health_url}")
+    
+    try:
+        response = requests.get(health_url, timeout=10)
+        if response.status_code == 200:
+            print("✅ SUCCESS! Health endpoint is working")
+            print(f"📊 Response: {response.json()}")
+        else:
+            print(f"❌ ERROR: Got status code {response.status_code}")
+            print(f"Response: {response.text}")
+    except requests.exceptions.RequestException as e:
+        print(f"❌ CONNECTION ERROR: {e}")
+        print("\n💡 This might mean:")
+        print("   - Your Repl isn't publicly accessible yet")
+        print("   - You need to deploy your Repl first")
+        print("   - The URL format might be different")
+    
+    print("\n" + "="*50)
+    print("📋 FOR UPTIMEROBOT SETUP:")
+    print("="*50)
+    print(f"🎯 Monitor URL: {health_url}")
+    print("⚙️  Monitor Type: HTTP(s)")
+    print("⏰ Interval: 5 minutes")
+    print("🔄 Method: GET")
+    print("✅ Expected Status: 200")
+    print("="*50)
+
+if __name__ == "__main__":
+    print("🚀 Replit URL Detection Tool")
+    print("="*50)
+    
+    # Show environment info
+    print("📋 Environment Variables:")
+    for key in ['REPL_SLUG', 'REPL_OWNER', 'REPLIT_DOMAINS']:
+        value = os.environ.get(key, 'Not set')
+        print(f"   {key}: {value}")
+    
+    print("\n")
+    test_health_endpoint()
+    
+    print("\n💡 Quick Steps:")
+    print("1. Copy the Monitor URL above")
+    print("2. Go to uptimerobot.com and create account")
+    print("3. Add new HTTP monitor with that URL")
+    print("4. Set interval to 5 minutes")
+    print("5. Your bot will stay alive 24/7!")
