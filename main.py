@@ -82,6 +82,7 @@ def main():
         application.add_handler(CommandHandler("fact", random_fact))
         application.add_handler(CommandHandler("8ball", magic_8ball))
         application.add_handler(CommandHandler("choose", choose_option))
+        application.add_handler(CommandHandler("test", test_command))
         
         # Message handlers
         application.add_handler(MessageHandler(filters.StatusUpdate.NEW_CHAT_MEMBERS, welcome_new_member))

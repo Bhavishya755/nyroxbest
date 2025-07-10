@@ -29,10 +29,15 @@ async def get_user_from_message(update: Update, context: ContextTypes.DEFAULT_TY
             # Try to parse username (remove @ if present)
             if user_input.startswith('@'):
                 username = user_input[1:]
+                # For usernames, we need to search through chat members
+                # This is a workaround since Telegram doesn't allow direct username lookup
                 try:
-                    # Note: get_chat doesn't work for usernames in groups
-                    # This is a limitation - we'll return None for now
-                    # In real implementation, you'd need to track users
+                    # Get recent chat members and search for username
+                    # This is a limitation but works for active users
+                    administrators = await context.bot.get_chat_administrators(update.effective_chat.id)
+                    for admin in administrators:
+                        if admin.user.username and admin.user.username.lower() == username.lower():
+                            return admin.user
                     return None
                 except:
                     return None

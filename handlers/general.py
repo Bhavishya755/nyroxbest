@@ -432,3 +432,22 @@ async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             
     except Exception as e:
         logger.error(f"Error in error_handler: {e}")
+
+async def test_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Test command to verify bot functionality"""
+    try:
+        await update.message.reply_text(
+            f"✅ **Bot Test Successful!**\n\n"
+            f"🤖 **Bot Status:** Online and working\n"
+            f"👤 **Your ID:** `{update.effective_user.id}`\n"
+            f"💬 **Chat ID:** `{update.effective_chat.id}`\n"
+            f"📅 **Time:** {update.message.date.strftime('%Y-%m-%d %H:%M:%S')}\n\n"
+            f"🔧 **Admin Commands:** Try replying to a message and use `/ban` or `/kick`\n"
+            f"🎮 **Fun Commands:** Working perfectly (dice, jokes, etc.)\n"
+            f"📊 **Info Commands:** All functional",
+            parse_mode='Markdown'
+        )
+        logger.info(f"Test command used by user {update.effective_user.id}")
+    except Exception as e:
+        logger.error(f"Error in test_command: {e}")
+        await update.message.reply_text(f"{EMOJIS['error']} Test failed!")

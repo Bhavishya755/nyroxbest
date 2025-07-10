@@ -21,8 +21,13 @@ async def ban_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_to_ban = await get_user_from_message(update, context)
         if not user_to_ban:
             await update.message.reply_text(
-                f"{EMOJIS['error']} Please specify a user to ban!\n"
-                f"Usage: `/ban @username` or reply to a message"
+                f"{EMOJIS['error']} **User not found!**\n\n"
+                f"🔍 **How to specify a user:**\n"
+                f"• Reply to their message and use `/ban`\n"
+                f"• Use `/ban [user_id]` with their Telegram ID\n"
+                f"• Use `/ban @username` (works for admins)\n\n"
+                f"💡 **Tip:** Reply method works best for all users!",
+                parse_mode='Markdown'
             )
             return
             
@@ -94,8 +99,12 @@ async def kick_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_to_kick = await get_user_from_message(update, context)
         if not user_to_kick:
             await update.message.reply_text(
-                f"{EMOJIS['error']} Please specify a user to kick!\n"
-                f"Usage: `/kick @username` or reply to a message"
+                f"{EMOJIS['error']} **User not found!**\n\n"
+                f"🔍 **How to specify a user:**\n"
+                f"• Reply to their message and use `/kick`\n"
+                f"• Use `/kick [user_id]` with their Telegram ID\n\n"
+                f"💡 **Tip:** Reply method works best!",
+                parse_mode='Markdown'
             )
             return
             
