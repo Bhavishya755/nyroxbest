@@ -100,17 +100,6 @@ async def main_async():
         await application.start()
         await application.updater.start_polling(allowed_updates=Update.ALL_TYPES)
         
-        # Keep running until stopped
-        import signal
-        import sys
-        
-        def signal_handler(sig, frame):
-            logger.info("🛑 Stopping bot...")
-            sys.exit(0)
-        
-        signal.signal(signal.SIGINT, signal_handler)
-        signal.signal(signal.SIGTERM, signal_handler)
-        
         # Keep the bot running
         await application.updater.idle()
         
