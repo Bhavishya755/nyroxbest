@@ -6,6 +6,7 @@ Handles translate, weather, time and other utility functions
 import logging
 import json
 from datetime import datetime
+import pytz
 from telegram import Update
 from telegram.ext import ContextTypes
 from config import EMOJIS

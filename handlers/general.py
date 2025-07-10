@@ -447,7 +447,7 @@ async def test_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"🤖 **Bot Status:** Online and working\n"
             f"👤 **Your ID:** `{update.effective_user.id}`\n"
             f"💬 **Chat ID:** `{update.effective_chat.id}`\n"
-            f"📅 **Time:** {update.message.date.strftime('%Y-%m-%d %H:%M:%S')}\n\n"
+            f"⏰ Time: {datetime.now(pytz.timezone('Asia/Kolkata')).strftime('%Y-%m-%d %H:%M:%S')}\n\n"
             f"🔧 **Admin Commands:** Try replying to a message and use `/ban` or `/kick`\n"
             f"🎮 **Fun Commands:** Working perfectly (dice, jokes, etc.)\n"
             f"📊 **Info Commands:** All functional",

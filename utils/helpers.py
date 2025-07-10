@@ -5,7 +5,8 @@ Provides utility functions for user handling, time parsing, and more
 
 import logging
 import re
-from datetime import datetime, timedelta
+from datetime import datetime
+import pytz
 from telegram import Update, User
 from telegram.ext import ContextTypes
 from telegram.error import BadRequest

@@ -9,9 +9,9 @@ import os
 BOT_TOKEN = os.getenv("BOT_TOKEN", "7749307110:AAHohAq2WqBWdBXN2RjtQ55VY2BEbzsNUo4")
 
 # Bot Information
-BOT_NAME = "🤖 Admin Pro Bot"
+BOT_NAME = "🤖 Nyrox Bot"
 BOT_VERSION = "2.0.0"
-BOT_DESCRIPTION = "Comprehensive admin and moderation bot with emoji-rich interface"
+BOT_DESCRIPTION = "I’m your all-in-one bot for group control and smart moderation."
 
 # Command Categories
 ADMIN_COMMANDS = {

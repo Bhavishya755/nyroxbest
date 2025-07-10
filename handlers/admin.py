@@ -10,7 +10,8 @@ from telegram.error import BadRequest, Forbidden
 from utils.decorators import admin_required, bot_admin_required
 from utils.helpers import get_user_from_message, format_user_mention
 from config import EMOJIS, MESSAGES
-
+from datetime import datetime
+import pytz
 logger = logging.getLogger(__name__)
 
 @admin_required
@@ -68,7 +69,7 @@ async def ban_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"👤 **User:** {format_user_mention(user_to_ban)}\n"
             f"👑 **Banned by:** {format_user_mention(update.effective_user)}\n"
             f"📝 **Reason:** {reason}\n"
-            f"⏰ **Time:** {update.message.date.strftime('%Y-%m-%d %H:%M:%S')}",
+           f"⏰ Time: {datetime.now(pytz.timezone('Asia/Kolkata')).strftime('%Y-%m-%d %H:%M:%S')}",
             parse_mode='Markdown'
         )
         
@@ -100,7 +101,7 @@ async def unban_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"{EMOJIS['success']} **User Unbanned!**\n\n"
             f"👤 **User:** {format_user_mention(user_to_unban)}\n"
             f"👑 **Unbanned by:** {format_user_mention(update.effective_user)}\n"
-            f"⏰ **Time:** {update.message.date.strftime('%Y-%m-%d %H:%M:%S')}",
+            f"⏰ Time: {datetime.now(pytz.timezone('Asia/Kolkata')).strftime('%Y-%m-%d %H:%M:%S')}",
             parse_mode='Markdown'
         )
         
@@ -167,7 +168,7 @@ async def kick_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"👤 **User:** {format_user_mention(user_to_kick)}\n"
             f"👑 **Kicked by:** {format_user_mention(update.effective_user)}\n"
             f"📝 **Reason:** {reason}\n"
-            f"⏰ **Time:** {update.message.date.strftime('%Y-%m-%d %H:%M:%S')}",
+            f"⏰ Time: {datetime.now(pytz.timezone('Asia/Kolkata')).strftime('%Y-%m-%d %H:%M:%S')}",
             parse_mode='Markdown'
         )
         
@@ -213,7 +214,7 @@ async def promote_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"👤 **User:** {format_user_mention(user_to_promote)}\n"
             f"👑 **Promoted by:** {format_user_mention(update.effective_user)}\n"
             f"🔧 **Permissions:** Delete, Restrict, Pin messages\n"
-            f"⏰ **Time:** {update.message.date.strftime('%Y-%m-%d %H:%M:%S')}",
+            f"⏰ Time: {datetime.now(pytz.timezone('Asia/Kolkata')).strftime('%Y-%m-%d %H:%M:%S')}",
             parse_mode='Markdown'
         )
         
@@ -258,7 +259,7 @@ async def demote_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"{EMOJIS['success']} **User Demoted!**\n\n"
             f"👤 **User:** {format_user_mention(user_to_demote)}\n"
             f"👑 **Demoted by:** {format_user_mention(update.effective_user)}\n"
-            f"⏰ **Time:** {update.message.date.strftime('%Y-%m-%d %H:%M:%S')}",
+            f"⏰ Time: {datetime.now(pytz.timezone('Asia/Kolkata')).strftime('%Y-%m-%d %H:%M:%S')}",
             parse_mode='Markdown'
         )
         
@@ -289,7 +290,7 @@ async def pin_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
             f"{EMOJIS['pin']} **Message Pinned!**\n\n"
             f"👑 **Pinned by:** {format_user_mention(update.effective_user)}\n"
-            f"⏰ **Time:** {update.message.date.strftime('%Y-%m-%d %H:%M:%S')}",
+            f"⏰ Time: {datetime.now(pytz.timezone('Asia/Kolkata')).strftime('%Y-%m-%d %H:%M:%S')}",
             parse_mode='Markdown'
         )
         
@@ -317,7 +318,7 @@ async def unpin_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
             f"{EMOJIS['success']} **Message(s) Unpinned!**\n\n"
             f"👑 **Unpinned by:** {format_user_mention(update.effective_user)}\n"
-            f"⏰ **Time:** {update.message.date.strftime('%Y-%m-%d %H:%M:%S')}",
+            f"⏰ Time: {datetime.now(pytz.timezone('Asia/Kolkata')).strftime('%Y-%m-%d %H:%M:%S')}",
             parse_mode='Markdown'
         )
         
@@ -351,7 +352,7 @@ async def set_group_pic(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
             f"{EMOJIS['success']} **Group Picture Updated!**\n\n"
             f"👑 **Updated by:** {format_user_mention(update.effective_user)}\n"
-            f"⏰ **Time:** {update.message.date.strftime('%Y-%m-%d %H:%M:%S')}",
+            f"⏰ Time: {datetime.now(pytz.timezone('Asia/Kolkata')).strftime('%Y-%m-%d %H:%M:%S')}",
             parse_mode='Markdown'
         )
         
@@ -382,7 +383,7 @@ async def set_group_title(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"{EMOJIS['success']} **Group Title Updated!**\n\n"
             f"📝 **New Title:** {new_title}\n"
             f"👑 **Updated by:** {format_user_mention(update.effective_user)}\n"
-            f"⏰ **Time:** {update.message.date.strftime('%Y-%m-%d %H:%M:%S')}",
+            f"⏰ Time: {datetime.now(pytz.timezone('Asia/Kolkata')).strftime('%Y-%m-%d %H:%M:%S')}",
             parse_mode='Markdown'
         )
         
@@ -413,7 +414,7 @@ async def set_group_description(update: Update, context: ContextTypes.DEFAULT_TY
             f"{EMOJIS['success']} **Group Description Updated!**\n\n"
             f"📄 **New Description:** {new_description}\n"
             f"👑 **Updated by:** {format_user_mention(update.effective_user)}\n"
-            f"⏰ **Time:** {update.message.date.strftime('%Y-%m-%d %H:%M:%S')}",
+            f"⏰ Time: {datetime.now(pytz.timezone('Asia/Kolkata')).strftime('%Y-%m-%d %H:%M:%S')}",
             parse_mode='Markdown'
         )
         
