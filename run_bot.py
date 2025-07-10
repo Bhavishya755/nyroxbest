@@ -4,7 +4,7 @@ This combines the bot and web server for 24/7 operation on Replit
 """
 
 import logging
-from keepalive_server import keep_alive
+from simple_server import keep_alive
 
 # Configure logging
 logging.basicConfig(
@@ -23,5 +23,9 @@ if __name__ == '__main__':
     logger.info("🚀 Starting Telegram Bot with Keep-Alive Server")
     logger.info("=" * 50)
     
-    # Start keep-alive server (this will also start the bot)
+    # Start keep-alive server
     keep_alive()
+    
+    # Start bot directly
+    from main import main
+    main()

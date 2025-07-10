@@ -100,12 +100,10 @@ async def main_async():
         await application.start()
         await application.updater.start_polling(allowed_updates=Update.ALL_TYPES)
         
-        # Keep the bot running (use run_polling for older versions)
-        try:
-            await application.updater.idle()
-        except AttributeError:
-            # For older python-telegram-bot versions
-            await application.run_polling()
+        # Keep the bot running without signal handlers in thread
+        import asyncio
+        while True:
+            await asyncio.sleep(1)
         
     except Exception as e:
         logger.error(f"❌ Failed to start bot: {e}")
