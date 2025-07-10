@@ -18,39 +18,60 @@ async def get_user_from_message(update: Update, context: ContextTypes.DEFAULT_TY
     Returns User object or None
     """
     try:
-        # If replying to a message, get user from that message
+        # If replying to a message, get user from that message (most reliable)
         if update.message.reply_to_message:
-            return update.message.reply_to_message.from_user
+            target_user = update.message.reply_to_message.from_user
+            logger.info(f"Found user via reply: {target_user.id} ({target_user.first_name})")
+            return target_user
             
         # If command has arguments, try to parse user
         if context.args and len(context.args) > 0:
-            user_input = context.args[0]
+            user_input = context.args[0].strip()
             
-            # Try to parse username (remove @ if present)
-            if user_input.startswith('@'):
-                username = user_input[1:]
-                # For usernames, we need to search through chat members
-                # This is a workaround since Telegram doesn't allow direct username lookup
-                try:
-                    # Get recent chat members and search for username
-                    # This is a limitation but works for active users
-                    administrators = await context.bot.get_chat_administrators(update.effective_chat.id)
-                    for admin in administrators:
-                        if admin.user.username and admin.user.username.lower() == username.lower():
-                            return admin.user
-                    return None
-                except:
-                    return None
-                    
-            # Try to parse user ID
-            elif user_input.isdigit():
+            # Try to parse user ID (most reliable for API)
+            if user_input.isdigit():
                 user_id = int(user_input)
                 try:
                     chat_member = await context.bot.get_chat_member(update.effective_chat.id, user_id)
+                    logger.info(f"Found user via ID: {chat_member.user.id} ({chat_member.user.first_name})")
                     return chat_member.user
-                except BadRequest:
+                except BadRequest as e:
+                    logger.warning(f"User ID {user_id} not found in chat: {e}")
                     return None
                     
+            # Try to parse username (remove @ if present)
+            elif user_input.startswith('@'):
+                username = user_input[1:].lower()
+                try:
+                    # Search through administrators first (they're most likely to be targeted)
+                    administrators = await context.bot.get_chat_administrators(update.effective_chat.id)
+                    for admin in administrators:
+                        if admin.user.username and admin.user.username.lower() == username:
+                            logger.info(f"Found admin user via username: {admin.user.id} ({admin.user.first_name})")
+                            return admin.user
+                    
+                    # If not found in admins, try a broader search (limited by Telegram API)
+                    # Note: This is limited but covers most use cases
+                    logger.warning(f"Username @{username} not found in admin list")
+                    return None
+                except Exception as e:
+                    logger.error(f"Error searching for username @{username}: {e}")
+                    return None
+                    
+            # Try parsing as plain username without @
+            else:
+                try:
+                    administrators = await context.bot.get_chat_administrators(update.effective_chat.id)
+                    for admin in administrators:
+                        if admin.user.username and admin.user.username.lower() == user_input.lower():
+                            logger.info(f"Found admin user via plain username: {admin.user.id} ({admin.user.first_name})")
+                            return admin.user
+                    return None
+                except Exception as e:
+                    logger.error(f"Error searching for plain username {user_input}: {e}")
+                    return None
+                    
+        logger.warning("No user specified in command or reply")
         return None
         
     except Exception as e:

@@ -31,10 +31,31 @@ async def ban_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
             return
             
-        # Check if user is admin
+        # Safety checks
+        if user_to_ban.id == context.bot.id:
+            await update.message.reply_text(
+                f"{EMOJIS['error']} **Cannot Ban Myself!**\n\n"
+                f"🤖 I cannot ban myself from the group\n"
+                f"💡 This is a safety feature"
+            )
+            return
+            
+        if user_to_ban.id == update.effective_user.id:
+            await update.message.reply_text(
+                f"{EMOJIS['error']} **Cannot Ban Yourself!**\n\n"
+                f"👤 You cannot ban yourself\n"
+                f"💡 Ask another admin if needed"
+            )
+            return
+        
+        # Check if user is admin or creator
         chat_member = await context.bot.get_chat_member(update.effective_chat.id, user_to_ban.id)
         if chat_member.status in ['administrator', 'creator']:
-            await update.message.reply_text(MESSAGES['cant_act_on_admin'])
+            await update.message.reply_text(
+                f"{EMOJIS['error']} **Cannot Ban Admin!**\n\n"
+                f"👑 Cannot ban administrators or group owner\n"
+                f"💡 Demote them first if necessary"
+            )
             return
             
         # Ban the user
@@ -108,10 +129,31 @@ async def kick_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
             return
             
-        # Check if user is admin
+        # Safety checks
+        if user_to_kick.id == context.bot.id:
+            await update.message.reply_text(
+                f"{EMOJIS['error']} **Cannot Kick Myself!**\n\n"
+                f"🤖 I cannot kick myself from the group\n"
+                f"💡 This is a safety feature"
+            )
+            return
+            
+        if user_to_kick.id == update.effective_user.id:
+            await update.message.reply_text(
+                f"{EMOJIS['error']} **Cannot Kick Yourself!**\n\n"
+                f"👤 You cannot kick yourself\n"
+                f"💡 Ask another admin if needed"
+            )
+            return
+        
+        # Check if user is admin or creator
         chat_member = await context.bot.get_chat_member(update.effective_chat.id, user_to_kick.id)
         if chat_member.status in ['administrator', 'creator']:
-            await update.message.reply_text(MESSAGES['cant_act_on_admin'])
+            await update.message.reply_text(
+                f"{EMOJIS['error']} **Cannot Kick Admin!**\n\n"
+                f"👑 Cannot kick administrators or group owner\n"
+                f"💡 Demote them first if necessary"
+            )
             return
             
         # Kick the user (ban then unban)
