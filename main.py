@@ -11,12 +11,13 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from config import BOT_TOKEN, ADMIN_COMMANDS, MODERATION_COMMANDS, FUN_COMMANDS, INFO_COMMANDS
+from config import BOT_TOKEN, ADMIN_COMMANDS, MODERATION_COMMANDS, FUN_COMMANDS, INFO_COMMANDS, UTILITY_COMMANDS
 from handlers.admin import *
 from handlers.moderation import *
 from handlers.fun import *
 from handlers.info import *
 from handlers.general import *
+from handlers.utility import *
 
 # Configure logging
 logging.basicConfig(
@@ -83,6 +84,12 @@ def main():
         application.add_handler(CommandHandler("8ball", magic_8ball))
         application.add_handler(CommandHandler("choose", choose_option))
         application.add_handler(CommandHandler("test", test_command))
+        
+        # Utility commands
+        application.add_handler(CommandHandler("translate", translate_text))
+        application.add_handler(CommandHandler("time", time_command))
+        application.add_handler(CommandHandler("calc", calculate_command))
+        application.add_handler(CommandHandler("password", generate_password))
         
         # Message handlers
         application.add_handler(MessageHandler(filters.StatusUpdate.NEW_CHAT_MEMBERS, welcome_new_member))

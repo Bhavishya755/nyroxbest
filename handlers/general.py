@@ -105,6 +105,12 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             help_text += f"• `/{cmd}` - {desc}\n"
         help_text += f"• _...and {len(FUN_COMMANDS)-4} more fun commands_\n\n"
         
+        help_text += f"🛠️ **Utility Commands:**\n"
+        help_text += f"• `/translate` - 🌐 Translate text between languages\n"
+        help_text += f"• `/time` - 🕐 Get current time and date\n"
+        help_text += f"• `/calc` - 🧮 Calculate math expressions\n"
+        help_text += f"• `/password` - 🔐 Generate secure passwords\n\n"
+        
         help_text += f"💡 **Tips:**\n"
         help_text += f"• Use `/menu` for an interactive command browser\n"
         help_text += f"• Most admin commands require admin permissions\n"

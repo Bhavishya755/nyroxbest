@@ -4,7 +4,11 @@
 
 This is a comprehensive Telegram bot designed for group administration and moderation. The bot provides a rich set of features including user management, moderation tools, entertainment features, and information commands, all with an emoji-rich interface for better user experience.
 
-**Latest Update (July 10, 2025):** Comprehensive reliability improvements implemented with 90% command success rate in testing. Enhanced error handling, improved user targeting, and better validation for all admin/moderation commands.
+**Latest Update (July 10, 2025):** 
+- Comprehensive reliability improvements implemented with 90% command success rate in testing
+- Enhanced error handling, improved user targeting, and better validation for all admin/moderation commands
+- Added 4 new utility commands: translate, time, calc, password
+- Improved user-friendly interface with better help system and clearer instructions
 
 ## User Preferences
 

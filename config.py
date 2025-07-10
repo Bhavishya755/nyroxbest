@@ -59,6 +59,14 @@ FUN_COMMANDS = {
     "choose": "🤔 Choose between options"
 }
 
+UTILITY_COMMANDS = {
+    "translate": "🌐 Translate text between languages",
+    "time": "🕐 Get current time and date", 
+    "calc": "🧮 Calculate math expressions",
+    "password": "🔐 Generate secure passwords",
+    "test": "✅ Test bot functionality"
+}
+
 GENERAL_COMMANDS = {
     "start": "🚀 Start the bot",
     "help": "❓ Get help",
