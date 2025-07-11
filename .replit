@@ -5,7 +5,7 @@ channel = "stable-24_05"
 packages = ["cacert", "ffmpeg-full", "freetype", "glibcLocales", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "pkg-config", "tcl", "tk", "zlib"]
 
 [workflows]
-runButton = "Bot Keep-Alive Server"
+runButton = "Project"
 
 [[workflows.workflow]]
 name = "Project"
@@ -14,15 +14,15 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Bot Keep-Alive Server"
+args = "Telegram Bot 24/7"
 
 [[workflows.workflow]]
-name = "Bot Keep-Alive Server"
+name = "Telegram Bot 24/7"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python run_bot.py"
+args = "python bot_runner.py"
 waitForPort = 5000
 
 [[ports]]
