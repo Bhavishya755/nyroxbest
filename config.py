@@ -4,9 +4,14 @@ Contains bot settings, commands, and constants
 """
 
 import os
+import logging
+from datetime import timezone, timedelta
 
 # Bot Token - Get from environment variable
 BOT_TOKEN = os.getenv("BOT_TOKEN")
+
+# Indian Standard Time (IST) timezone
+IST = timezone(timedelta(hours=5, minutes=30))
 
 # Bot Information
 BOT_NAME = "🤖 Nyrox Bot"

@@ -7,11 +7,12 @@ Date: July 10, 2025
 
 import logging
 import os
+from datetime import datetime
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackQueryHandler
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from config import BOT_TOKEN, ADMIN_COMMANDS, MODERATION_COMMANDS, FUN_COMMANDS, INFO_COMMANDS, UTILITY_COMMANDS
+from config import BOT_TOKEN, ADMIN_COMMANDS, MODERATION_COMMANDS, FUN_COMMANDS, INFO_COMMANDS, UTILITY_COMMANDS, IST
 from handlers.admin import *
 from handlers.moderation import *
 from handlers.fun import *
@@ -19,14 +20,29 @@ from handlers.info import *
 from handlers.general import *
 from handlers.utility import *
 
-# Configure logging
+# Custom logging formatter for IST timezone
+class ISTFormatter(logging.Formatter):
+    def formatTime(self, record, datefmt=None):
+        dt = datetime.fromtimestamp(record.created, tz=IST)
+        if datefmt:
+            return dt.strftime(datefmt)
+        return dt.strftime('%Y-%m-%d %H:%M:%S IST')
+
+# Configure logging with IST timezone
+formatter = ISTFormatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+# File handler
+file_handler = logging.FileHandler('bot.log')
+file_handler.setFormatter(formatter)
+
+# Console handler
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(formatter)
+
+# Configure root logger
 logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO,
-    handlers=[
-        logging.FileHandler('bot.log'),
-        logging.StreamHandler()
-    ]
+    handlers=[file_handler, console_handler]
 )
 logger = logging.getLogger(__name__)
 

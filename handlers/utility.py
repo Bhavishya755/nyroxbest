@@ -5,10 +5,13 @@ Handles translate, weather, time and other utility functions
 
 import logging
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from telegram import Update
 from telegram.ext import ContextTypes
 from config import EMOJIS
+
+# Indian Standard Time (IST) timezone
+IST = timezone(timedelta(hours=5, minutes=30))
 
 logger = logging.getLogger(__name__)
 
@@ -92,17 +95,18 @@ async def translate_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def time_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Show current time and date"""
     try:
-        now = datetime.now()
+        # Get current time in IST
+        now_ist = datetime.now(IST)
         
         time_text = f"🕐 **Current Time & Date**\n\n"
-        time_text += f"📅 **Date:** {now.strftime('%A, %B %d, %Y')}\n"
-        time_text += f"⏰ **Time:** {now.strftime('%H:%M:%S UTC')}\n"
-        time_text += f"🌍 **Timezone:** UTC (Server Time)\n\n"
+        time_text += f"📅 **Date:** {now_ist.strftime('%A, %B %d, %Y')}\n"
+        time_text += f"⏰ **Time:** {now_ist.strftime('%H:%M:%S IST')}\n"
+        time_text += f"🇮🇳 **Timezone:** IST (Indian Standard Time)\n\n"
         time_text += f"📊 **Formats:**\n"
-        time_text += f"• 24h: {now.strftime('%H:%M:%S')}\n"
-        time_text += f"• 12h: {now.strftime('%I:%M:%S %p')}\n"
-        time_text += f"• ISO: {now.isoformat()}\n"
-        time_text += f"• Unix: {int(now.timestamp())}"
+        time_text += f"• 24h: {now_ist.strftime('%H:%M:%S')}\n"
+        time_text += f"• 12h: {now_ist.strftime('%I:%M:%S %p')}\n"
+        time_text += f"• ISO: {now_ist.isoformat()}\n"
+        time_text += f"• Unix: {int(now_ist.timestamp())}"
         
         await update.message.reply_text(time_text, parse_mode='Markdown')
         logger.info(f"Time command used by user {update.effective_user.id}")

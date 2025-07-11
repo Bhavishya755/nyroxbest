@@ -5,10 +5,13 @@ Provides utility functions for user handling, time parsing, and more
 
 import logging
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from telegram import Update, User
 from telegram.ext import ContextTypes
 from telegram.error import BadRequest
+
+# Indian Standard Time (IST) timezone
+IST = timezone(timedelta(hours=5, minutes=30))
 
 logger = logging.getLogger(__name__)
 
@@ -141,8 +144,29 @@ def format_duration(seconds: int) -> str:
         else:
             days = seconds // 86400
             return f"{days} day{'s' if days != 1 else ''}"
-    except:
-        return "unknown duration"
+    except Exception as e:
+        logger.error(f"Error formatting duration: {e}")
+        return f"{seconds} seconds"
+
+def get_ist_time() -> datetime:
+    """
+    Get current time in Indian Standard Time (IST)
+    """
+    return datetime.now(IST)
+
+def format_ist_time(dt: datetime = None) -> str:
+    """
+    Format datetime in IST timezone
+    """
+    if dt is None:
+        dt = get_ist_time()
+    else:
+        # Convert to IST if it's not already
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        dt = dt.astimezone(IST)
+    
+    return dt.strftime('%Y-%m-%d %H:%M:%S IST')
 
 def escape_markdown(text: str) -> str:
     """

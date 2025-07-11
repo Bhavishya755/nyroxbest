@@ -20,6 +20,8 @@ This is a comprehensive Telegram bot designed for group administration and moder
 - 🔐 Enhanced calculator security with restricted eval() execution
 - 🧪 Comprehensive testing suite validates all 41 commands across 6 categories
 - 📊 Bot status monitoring system confirms all systems operational
+- 🇮🇳 Updated timezone to Indian Standard Time (IST) for all timestamps and time displays
+- ⏰ Custom logging formatter displays IST timestamps in logs and console output
 
 ## User Preferences
 
