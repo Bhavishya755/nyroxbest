@@ -22,6 +22,10 @@ This is a comprehensive Telegram bot designed for group administration and moder
 - 📊 Bot status monitoring system confirms all systems operational
 - 🇮🇳 Updated timezone to Indian Standard Time (IST) for all timestamps and time displays
 - ⏰ Custom logging formatter displays IST timestamps in logs and console output
+- 🔧 Fixed all admin, moderation, and info commands to display IST timestamps instead of UTC
+- ✅ All ban/unban/kick/promote/demote actions now show correct IST time
+- 📊 User info, chat info, and admin lists now display IST timestamps
+- 🛠️ Created comprehensive IST timezone helper functions for consistent time formatting
 
 ## User Preferences
 

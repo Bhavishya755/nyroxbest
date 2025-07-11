@@ -10,9 +10,9 @@ from datetime import datetime, timezone
 from telegram import Update
 from telegram.ext import ContextTypes
 from telegram.error import BadRequest
-from utils.helpers import get_user_from_message, format_user_mention
+from utils.helpers import get_user_from_message, format_user_mention, get_ist_time, format_ist_time
 from utils.decorators import admin_required
-from config import EMOJIS
+from config import EMOJIS, IST
 
 logger = logging.getLogger(__name__)
 
@@ -103,7 +103,7 @@ async def user_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if restrictions:
                 info_text += f"🚫 **Restrictions:** {', '.join(restrictions)}\n"
                 
-        info_text += f"\n📅 **Checked:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        info_text += f"\n📅 **Checked:** {format_ist_time()}"
         
         await update.message.reply_text(info_text, parse_mode='Markdown')
         
@@ -148,7 +148,7 @@ async def chat_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if hasattr(chat, 'invite_link') and chat.invite_link:
             info_text += f"🔗 **Invite Link:** {chat.invite_link}\n"
             
-        info_text += f"\n📅 **Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        info_text += f"\n📅 **Generated:** {format_ist_time()}"
         
         await update.message.reply_text(info_text, parse_mode='Markdown')
         
@@ -186,7 +186,7 @@ async def list_admins(update: Update, context: ContextTypes.DEFAULT_TYPE):
             admin_list += f"⭐ **Administrators:** None\n"
             
         admin_list += f"\n📊 **Total:** {len(admins)} admin(s)"
-        admin_list += f"\n📅 **Updated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        admin_list += f"\n📅 **Updated:** {format_ist_time()}"
         
         await update.message.reply_text(admin_list, parse_mode='Markdown')
         
@@ -205,7 +205,7 @@ async def member_count(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"👥 **Member Count**\n\n"
             f"📊 **Total Members:** {count:,}\n"
             f"💬 **Chat:** {update.effective_chat.title or 'This Chat'}\n"
-            f"📅 **Updated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+            f"📅 **Updated:** {format_ist_time()}",
             parse_mode='Markdown'
         )
         
@@ -248,7 +248,7 @@ async def show_rules(update: Update, context: ContextTypes.DEFAULT_TYPE):
             rules_text = f"📜 **Group Rules**\n\n"
             rules_text += f"📝 {rules[chat_id]}\n\n"
             rules_text += f"⚠️ Please follow these rules to maintain a healthy community!\n"
-            rules_text += f"📅 Last updated: {datetime.now().strftime('%Y-%m-%d')}"
+            rules_text += f"📅 Last updated: {get_ist_time().strftime('%Y-%m-%d')}"
         else:
             rules_text = f"📜 **Group Rules**\n\n"
             rules_text += f"❌ No rules have been set for this group yet.\n"
@@ -284,7 +284,7 @@ async def set_rules(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"📜 **Rules Updated!**\n\n"
             f"📝 **New Rules:** {new_rules}\n\n"
             f"👑 **Set by:** {format_user_mention(update.effective_user)}\n"
-            f"📅 **Date:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+            f"📅 **Date:** {format_ist_time()}",
             parse_mode='Markdown'
         )
         
