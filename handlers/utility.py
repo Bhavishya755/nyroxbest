@@ -143,7 +143,16 @@ async def calculate_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             
         # Evaluate the expression safely
         try:
-            result = eval(expression)
+            # Use eval with restricted globals for safer execution
+            safe_dict = {
+                "__builtins__": {},
+                "abs": abs,
+                "round": round,
+                "min": min,
+                "max": max,
+                "pow": pow
+            }
+            result = eval(expression, safe_dict)
             
             calc_text = f"🧮 **Calculator Result**\n\n"
             calc_text += f"📝 **Expression:** `{expression}`\n"
