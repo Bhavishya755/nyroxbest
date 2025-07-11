@@ -47,3 +47,6 @@ urllib3==2.5.0
 websockets==15.0.1
 yarl==1.20.1
 yt-dlp==2023.11.16
+flask
+python-telegram-bot
+telegram
